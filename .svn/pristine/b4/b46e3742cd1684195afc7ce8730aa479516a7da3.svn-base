@@ -1,0 +1,102 @@
+//
+//  MSIdentityViewController.m
+//  DaBan
+//
+//  Created by qkm on 15-8-24.
+//  Copyright (c) 2015年 QKM. All rights reserved.
+//
+
+#import "MSIdentityViewController.h"
+#import "MSIdentityView.h"
+#import "MSWalletModel.h"
+
+@interface MSIdentityViewController ()
+{
+    MSIdentityView  *identityView;
+    MSWalletModel   *model;
+}
+@end
+
+@implementation MSIdentityViewController
+
+
+
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    self.title = @"身份认证";
+    
+//    model = [[MSWalletModel alloc]init];
+//    model.name = @"王二狗";
+//    model.number = @"1231412421";
+//    model.identfImg = @"iden.png";
+    
+    identityView = [[MSIdentityView alloc]init];
+//    identityView.model = model;
+    identityView.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    
+    [identityView.nextButton addTarget:self action:@selector(nextButtonClick) forControlEvents:UIControlEventTouchUpInside];
+    [identityView.btnPhoto addTarget:self action:@selector(btnPhotoClick) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.view addSubview:identityView];
+    
+}
+
+-(void)nextButtonClick{
+    NSLog(@"%@--%@",identityView.numberTextField.text,identityView.nameTextField.text);
+    if (NULL_STR(identityView.nameTextField.text)) {
+        [self showMyMessage:@"您填写的姓名不正确"];
+    }else if (identityView.numberTextField.text.length !=18){
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"身份证号码格式错误" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        [alertView show];
+    }else{
+        [self request];
+    }
+}
+
+-(void)btnPhotoClick{
+
+}
+
+-(void)request{
+    
+    NSURL *url4 = [NSURL URLWithString:[NSString stringWithFormat:@"%@verify/id?token=%@&real_name=%@&num_id_license=%@&imgurl_id_license=%@",DaBan_URL,[self url],identityView.nameTextField.text,identityView.numberTextField.text,@"self.png"]];
+    
+    
+    
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url4];
+    
+    [request addRequestHeader:@"Content-Type" value:@"application/json; encoding=utf-8"];
+    
+    [request addRequestHeader:@"Accept" value:@"application/json"];
+    
+    [request setRequestMethod:@"POST"];
+    
+    [request startSynchronous];
+    
+    NSError *error1 = [request error];
+    
+    if (!error1) {
+        NSString *response = [request responseString];
+        NSData *data = [response dataUsingEncoding:NSUTF8StringEncoding];
+        id result = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+        
+        if ([[result objectForKey:@"retcode"]intValue] == 0) {
+            [self showMyMessage:@"我们将在最快的时间为您审核，请耐心等待"];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"identity" object:@"YES"];
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+        NSLog(@"Test: %@",response);
+    }
+
+    
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+
+@end

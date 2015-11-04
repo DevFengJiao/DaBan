@@ -1,0 +1,5 @@
+platform :ios, '7.0'
+pod 'AVOSCloudIM'
+pod 'JSBadgeView'
+pod 'FMDB'
+pod 'DateTools'

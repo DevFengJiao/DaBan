@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>F513B01A-73EF-49A6-90C7-B61A25A3633B</string>
+	<key>IDESourceControlProjectName</key>
+	<string>DaBan</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>308dc408-06ec-11e5-80ce-77b81afec0db++234</key>
+		<string>svn://10.156.0.88/qkm/dabanke/trunk/DaBan_ios/DaBan</string>
+		<key>308dc408-06ec-11e5-80ce-77b81afec0db++5532</key>
+		<string>svn://10.156.0.88/qkm/dabanke/trunk/DaBan_ios/DaBan1</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>DaBan.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>308dc408-06ec-11e5-80ce-77b81afec0db++234</key>
+		<string>..</string>
+		<key>308dc408-06ec-11e5-80ce-77b81afec0db++5532</key>
+		<string>..1</string>
+	</dict>
+	<key>IDESourceControlProjectRepositoryRootDictionary</key>
+	<dict>
+		<key>308dc408-06ec-11e5-80ce-77b81afec0db++234</key>
+		<string>svn://10.156.0.88/qkm</string>
+		<key>308dc408-06ec-11e5-80ce-77b81afec0db++5532</key>
+		<string>svn://10.156.0.88/qkm</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>svn://10.156.0.88/qkm/dabanke/trunk/DaBan_ios/DaBan/DaBan.xcworkspace</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>308dc408-06ec-11e5-80ce-77b81afec0db++234</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.subversion</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>308dc408-06ec-11e5-80ce-77b81afec0db++234</string>
+			<key>IDESourceControlWCCName</key>
+			<string>DaBan</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.subversion</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>308dc408-06ec-11e5-80ce-77b81afec0db++5532</string>
+			<key>IDESourceControlWCCName</key>
+			<string>DaBan1</string>
+		</dict>
+	</array>
+</dict>
+</plist>

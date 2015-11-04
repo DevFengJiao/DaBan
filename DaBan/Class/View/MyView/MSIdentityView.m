@@ -1,0 +1,164 @@
+//
+//  MSIdentityView.m
+//  DaBan
+//
+//  Created by qkm on 15-8-24.
+//  Copyright (c) 2015年 QKM. All rights reserved.
+//
+
+#import "MSIdentityView.h"
+
+#define NUMBERS @ "0123456789\n"
+
+@implementation MSIdentityView
+
+-(id)init{
+    self = [super init];
+    if (self) {
+        [self initUI];
+    }
+    return self;
+}
+
+-(id)initWithFrame:(CGRect)frame{
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self initUI];
+    }
+    return self;
+}
+
+-(void)initUI{
+    
+    UIView *bgView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 110.5)];
+    bgView.backgroundColor = [UIColor whiteColor];
+    [self addSubview:bgView];
+    
+    CGFloat heigth = 55;
+    
+    UILabel *labe1 = [[UILabel  alloc]initWithFrame:CGRectMake(15, 0, 70, heigth)];
+    labe1.backgroundColor = [UIColor clearColor];
+    labe1.text = @"真实姓名";
+    labe1.textColor = ZICOLOR;
+    labe1.font = ZIFOUT16;
+    [bgView addSubview:labe1];
+    
+    self.nameTextField = [[UITextField alloc]initWithFrame:CGRectMake(labe1.frame.size.width+labe1.frame.origin.x+20, 0, bgView.frame.size.width-20-80, heigth)];
+    self.nameTextField.placeholder = @"请输入您的真实姓名";
+    self.nameTextField.delegate = self;
+    self.nameTextField.tag = 1;
+    self.nameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    self.nameTextField.clearsContextBeforeDrawing = YES;
+    self.nameTextField.returnKeyType = UIReturnKeyDone;
+    [self.nameTextField setFont:ZIFOUT16];
+    self.nameTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    self.nameTextField.backgroundColor = [UIColor clearColor];
+    self.nameTextField.textColor = ZICOLOR;
+    
+    [bgView addSubview:self.nameTextField];
+    
+    UILabel *line1 = [[UILabel alloc]initWithFrame:CGRectMake(0, labe1.frame.size.height+labe1.frame.origin.y, bgView.frame.size.width, 0.5)];
+    line1.backgroundColor = LINEC;
+    [bgView addSubview:line1];
+    
+    UILabel *labe2 = [[UILabel  alloc]initWithFrame:CGRectMake(15, line1.frame.size.height+line1.frame.origin.y, 70, heigth)];
+    labe2.backgroundColor = [UIColor clearColor];
+    labe2.text = @"身份证号";
+    labe2.textColor = ZICOLOR;
+    labe2.font = ZIFOUT16;
+    [bgView addSubview:labe2];
+    
+    self.numberTextField = [[UITextField alloc]initWithFrame:CGRectMake(labe1.frame.size.width+labe1.frame.origin.x+20, line1.frame.size.height+line1.frame.origin.y, bgView.frame.size.width-20-80, heigth)];
+    self.numberTextField.placeholder = @"请输入您的身份证号";
+    self.numberTextField.delegate = self;
+    self.numberTextField.tag = 2;
+    self.numberTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    self.numberTextField.clearsContextBeforeDrawing = YES;
+    self.numberTextField.returnKeyType = UIReturnKeyDone;
+    [self.numberTextField setFont:ZIFOUT16];
+    self.numberTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    self.numberTextField.backgroundColor = [UIColor clearColor];
+    self.numberTextField.textColor = ZICOLOR;
+    [bgView addSubview:self.numberTextField];
+    
+    UIView *myView = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(bgView.frame)+10, SCREEN_WIDTH, 205)];
+    myView.backgroundColor = [UIColor whiteColor];
+    [self addSubview:myView];
+    
+    UILabel *labe3 = [[UILabel  alloc]initWithFrame:CGRectMake(15,10, 160, 15)];
+    labe3.backgroundColor = [UIColor clearColor];
+    labe3.text = @"上传身份证照片";
+    labe3.font = ZIFOUT16;
+    labe3.textColor = ZICOLOR;
+    [myView addSubview:labe3];
+
+    self.btnPhoto = [[UIButton alloc]initWithFrame:CGRectMake(15, labe3.frame.size.height+labe3.frame.origin.y+10, SCREEN_WIDTH-30, 160)];
+    self.btnPhoto.backgroundColor= [UIColor clearColor];
+    [self.btnPhoto setBackgroundImage:[UIImage imageNamed:@"add_photo.png"] forState:UIControlStateNormal];
+    [myView addSubview:self.btnPhoto];
+    
+//    _imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"a.png"]];
+//    _imageView.frame = CGRectMake(0, 0, self.btnPhoto.frame.size.width, self.btnPhoto.frame.size.height);
+//    _imageView.contentMode = UIViewContentModeScaleAspectFill;
+//    [self.btnPhoto addSubview:_imageView];
+//    
+    self.nextButton = [[UIButton alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT-53-64, SCREEN_WIDTH, 53)];
+    [self.nextButton setTitle:@"提交" forState:UIControlStateNormal];
+    self.nextButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    self.nextButton.titleLabel.font = [UIFont systemFontOfSize:21];
+    self.nextButton.tintColor = [UIColor whiteColor];
+    self.nextButton.backgroundColor = APP_COLOR;
+    self.nextButton.showsTouchWhenHighlighted = YES;
+    [self addSubview:self.nextButton];
+
+
+}
+
+-(void)setModel:(MSWalletModel *)model{
+    _model = model;
+    self.nameTextField.text     = model.name;
+    self.numberTextField.text   = model.number;
+    self.imageView.image        = [UIImage imageNamed:model.identfImg];
+}
+
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+    [self.nameTextField resignFirstResponder];
+    [self.numberTextField resignFirstResponder];
+    
+}
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField{
+    [self.nameTextField resignFirstResponder];
+    [self.numberTextField resignFirstResponder];
+    return YES;
+}
+
+
+
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+    NSCharacterSet *cs;
+    if(textField == self.numberTextField)
+    {
+        cs = [[NSCharacterSet characterSetWithCharactersInString:NUMBERS] invertedSet];
+        NSString *filtered = [[string componentsSeparatedByCharactersInSet:cs] componentsJoinedByString:@""];
+        BOOL basicTest = [string isEqualToString:filtered];
+        if(!basicTest)
+        {
+            UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                            message:@"请输入数字"
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"确定"
+                                                  otherButtonTitles:nil];
+            
+            [alert show];
+            
+            return NO;
+        }
+    }
+    
+    
+    return YES;
+}
+
+
+@end

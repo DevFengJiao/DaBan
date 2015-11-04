@@ -1,0 +1,222 @@
+//
+//  MSWalletExtractionViewController.m
+//  DaBan
+//
+//  Created by qkm on 15-8-19.
+//  Copyright (c) 2015年 QKM. All rights reserved.
+//
+
+#import "MSWalletExtractionViewController.h"
+#import "MSTopView.h"
+#import "MSWalletModel.h"
+#import "MSIdentityViewController.h"
+
+@interface MSWalletExtractionViewController ()
+{
+    MSTopView   *topView;
+    UIButton    *agreeBtn;
+  
+}
+@property (nonatomic, strong)  MSWalletModel *model;
+@property (nonatomic, strong) UIButton  *nextButton;
+@property (nonatomic, assign) BOOL isAgree;
+@end
+
+@implementation MSWalletExtractionViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.title = @"余额提现";
+    
+    [self requset];
+    _model = [[MSWalletModel alloc]init];
+    double tempWallet = 1000.54;
+    _model.wallet =  [NSString stringWithFormat:@"%.2f",tempWallet];
+ 
+
+    topView = [[MSTopView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 100)];
+    topView.model = _model;
+    [self.view addSubview:topView];
+    
+    [self drawView];
+    
+}
+
+-(void)drawView{
+    
+    UILabel *topLab = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 24)];
+    topLab.backgroundColor = BACK_GRAY_COLOR20;
+    topLab.textColor = [UIColor whiteColor];
+    topLab.font = [UIFont systemFontOfSize:14.0];
+    topLab.text = @"身份认证之后才能提现哟";
+    topLab.textAlignment = NSTextAlignmentCenter;
+    [self.view addSubview:topLab];
+    
+    UIView *bgV = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(topView.frame)+10, SCREEN_WIDTH, 55+68.5)];
+    bgV.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:bgV];
+    
+    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, 100, 54)];
+    label.backgroundColor = [UIColor clearColor];
+    label.textColor = ZICOLOR;
+    label.font = [UIFont systemFontOfSize:16.0];
+    label.text = @"提现账号";
+    [bgV addSubview:label];
+    
+//    agreeBtn = [[UIButton alloc]initWithFrame:CGRectMake(40,label.frame.size.height+label.frame.origin.y+10,20,20)];
+//    agreeBtn.tag = 1;
+//    [agreeBtn setImage:[UIImage imageNamed:@"radio2@2x"] forState:UIControlStateNormal];
+//    [agreeBtn setImage:[UIImage imageNamed:@"radio1@2x"] forState:UIControlStateSelected];
+//    self.isAgree = agreeBtn.selected;
+//    
+//    [agreeBtn addTarget:self action:@selector(agreeBtnAction:) forControlEvents:UIControlEventTouchUpInside];
+//    [bgV addSubview:agreeBtn];
+    
+    UILabel *zifuLab = [[UILabel alloc]initWithFrame:CGRectMake(SCREEN_WIDTH-64, 0, 60, 54)];
+    zifuLab.backgroundColor = [UIColor clearColor];
+    zifuLab.text = @"支付宝";
+    zifuLab.textColor = ZICOLOR;
+    zifuLab.textAlignment = NSTextAlignmentRight;
+    zifuLab.font = [UIFont systemFontOfSize:14];
+    [bgV addSubview:zifuLab];
+    
+    UILabel *lineLab = [[UILabel alloc]initWithFrame:CGRectMake(0, 54.5, SCREEN_WIDTH, 0.5)];
+    lineLab.backgroundColor = LINEC;
+    [bgV addSubview:lineLab];
+    
+    UILabel *nameLab = [[UILabel alloc]initWithFrame:CGRectMake(10, CGRectGetMaxY(lineLab.frame)+10, 40, 20)];
+    nameLab.backgroundColor = [UIColor clearColor];
+    nameLab.text = @"姓名";
+    nameLab.textColor = ZICOLOR;
+    nameLab.font = ZIFOUT14;
+    [bgV addSubview:nameLab];
+    
+    UILabel *nameLab2 = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(nameLab.frame), CGRectGetMaxY(lineLab.frame)+10, 60, 20)];
+    nameLab2.backgroundColor = [UIColor clearColor];
+    nameLab2.text = @"史苦瓜";
+    nameLab2.textColor = ZICOLOR;
+    nameLab2.font = ZIFOUT14;
+    [bgV addSubview:nameLab2];
+
+    
+    UILabel *numberLab = [[UILabel alloc]initWithFrame:CGRectMake(10,CGRectGetMaxY(nameLab.frame)+10, 40, 20)];
+    numberLab.backgroundColor = [UIColor clearColor];
+    numberLab.text = @"账号";
+    numberLab.textColor = ZICOLOR;
+    numberLab.font = ZIFOUT14;
+    [bgV addSubview:numberLab];
+    
+    UILabel *numberLab2 = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(numberLab.frame),CGRectGetMaxY(nameLab.frame)+10, 60, 20)];
+    numberLab2.backgroundColor = [UIColor clearColor];
+    numberLab2.text = @"12345@qq.com";
+    numberLab2.textColor = ZICOLOR;
+    numberLab2.font = ZIFOUT14;
+    [bgV addSubview:numberLab2];
+    
+    bgV.frame = CGRectMake(bgV.frame.origin.x, bgV.frame.origin.y, bgV.frame.size.width, CGRectGetMaxY(numberLab2.frame)+10);
+    
+    UILabel *contenLab = [[UILabel alloc]initWithFrame:CGRectMake(10, CGRectGetMaxY(bgV.frame)+10, SCREEN_WIDTH-20, 100)];
+    contenLab.backgroundColor = [UIColor clearColor];
+    contenLab.numberOfLines = 0;
+    contenLab.font = [UIFont systemFontOfSize:11.0];
+    contenLab.text = @"提现须知\n 1.仅支持支付宝提现。\n 2.认证车主必须使用与驾驶证上姓名相同的银行卡或者支付宝账账户来提现。\n 3.提现金额和提现时间说明如下：\n 4.提现申请成功后，我们将尽快审核并支付，预计3个工作日到账。\n 5.如果您提交的帐号有误，提现款项将退回“拼搭钱包”，请您检查后重新申请提现。\n 6.外籍人士、特殊账户、实名用户信息错误等问题请您联系客服处理 400-xxx-xxxx。";
+    CGSize size = [contenLab sizeThatFits:CGSizeMake(contenLab.frame.size.width, MAXFLOAT)];
+    contenLab.frame = CGRectMake(contenLab.frame.origin.x, contenLab.frame.origin.y, contenLab.frame.size.width, size.height);
+    contenLab.textColor = ZICOLOR;
+    [self.view addSubview:contenLab];
+    
+    self.nextButton = [[UIButton alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT-53-64, SCREEN_WIDTH, 53)];
+    [self.nextButton setTitle:@"全额提现" forState:UIControlStateNormal];
+    self.nextButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    self.nextButton.titleLabel.font = [UIFont systemFontOfSize:21];
+    self.nextButton.tintColor = [UIColor whiteColor];
+    self.nextButton.backgroundColor = APP_COLOR;
+    self.nextButton.showsTouchWhenHighlighted = YES;
+    [self.nextButton addTarget:self action:@selector(nextButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.nextButton];
+    
+    
+}
+
+-(void)agreeBtnAction:(UIButton *)sender{
+    sender.selected = !sender.selected;
+    self.isAgree = sender.selected;
+}
+
+-(void)nextButtonAction:(UIButton *)sender{
+   
+    UIAlertView  *alert = [[UIAlertView alloc] initWithTitle:nil message:@"申请提交成功,预计将于3个工作日之内到账" delegate:self cancelButtonTitle:nil otherButtonTitles:@"确实", nil];
+    [alert show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex == 0) {
+        [self.navigationController  popViewControllerAnimated:YES];
+    }
+}
+
+-(void)requset{
+    NSString *url = [[NSUserDefaults standardUserDefaults] objectForKey:@"session_token"];
+    
+    NSString *url1 = [url stringByReplacingOccurrencesOfString:@"+" withString:@"%2b"];
+    
+    NSString *url2 = [url1 stringByReplacingOccurrencesOfString:@"/" withString:@"%2f"];
+    
+    NSString *url3 = [url2 stringByReplacingOccurrencesOfString:@"=" withString:@"%3d"];
+    
+    NSURL *url4 = [NSURL URLWithString:[NSString stringWithFormat:@"%@wallet_query?token=%@",DaBan_URL,url3]];
+    
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url4];
+    
+    [request addRequestHeader:@"Content-Type" value:@"application/json; encoding=utf-8"];
+    
+    [request addRequestHeader:@"Accept" value:@"application/json"];
+    
+    [request setRequestMethod:@"POST"];
+    
+    [SVProgressHUD dismiss];
+    
+    [request startSynchronous];
+    
+    NSError *error1 = [request error];
+    if (!error1) {
+        NSString *response = [request responseString];
+        NSData *data = [response dataUsingEncoding:NSUTF8StringEncoding];
+        id result = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+        
+        if ([[result objectForKey:@"retcode"]intValue] == 0) {
+            
+            NSString *tem = result[@"data"];
+            NSData* myData=[tem dataUsingEncoding:NSUTF8StringEncoding];
+            
+            id dictionary2 = [NSJSONSerialization JSONObjectWithData:myData options:NSJSONReadingAllowFragments error:nil];
+            
+            _model = [[MSWalletModel alloc]init];
+            _model.ziStr = @"账户余额(元)";
+            _model.bgImg = @"bGImg.png";
+            
+            double tempWallet = [[dictionary2 objectForKey:@"total_money"]doubleValue]/100;
+            _model.wallet =  [NSString stringWithFormat:@"%.2f",tempWallet];
+            _model.payment = [NSString stringWithFormat:@"已预付款%.2f元",tempWallet];
+            NSLog(@"wall--%@",_model.wallet);
+        }else {
+            
+            [self showMyMessage:@"攻城狮一步一步在努力啦!"];
+        }
+        
+        NSLog(@"Text: %@",response);
+    }
+    
+    
+    
+}
+
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+
+
+@end
